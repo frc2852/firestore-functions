@@ -7,7 +7,7 @@ export const eventLogBuilder = async (data, context) => {
 
   const robotEventLog = data.value.fields.events.arrayValue.values;
 
-  const eventLogs: any[] = robotEventLog.map(eventLog => {
+  let eventLogs: any[] = robotEventLog.map(eventLog => {
     return {
       eventKey,
       matchId,
@@ -20,7 +20,7 @@ export const eventLogBuilder = async (data, context) => {
   const frcEventDataDoc = firestore.collection("events").doc(eventKey);
   const frcEventData = (await frcEventDataDoc.get()).data();
 
-  const teamStatsForMatch = [
+  let teamStatsForMatch = [
     {
       eventKey,
       matchId,
@@ -65,11 +65,13 @@ export const eventLogBuilder = async (data, context) => {
   ];
 
   if (frcEventData && frcEventData.eventLogs) {
-    eventLogs.concat(frcEventData.eventLogs);
+    eventLogs = eventLogs.concat(frcEventData.eventLogs);
   }
 
   if (frcEventData && frcEventData.teamStatsForMatch) {
-    teamStatsForMatch.concat(frcEventData.teamStatsForMatch);
+    teamStatsForMatch = teamStatsForMatch.concat(
+      frcEventData.teamStatsForMatch
+    );
   }
 
   frcEventDataDoc.set(
