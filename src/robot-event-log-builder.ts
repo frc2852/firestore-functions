@@ -37,11 +37,14 @@ export const eventLogBuilder = async (data, context) => {
         .integerValue
         ? true
         : false,
-      climbSuccessful:
-        data.value.fields.endgame.mapValue.fields.climbed.integerValue &&
-        !data.value.fields.endgame.mapValue.fields.failed.integerValue
-          ? true
-          : false,
+      climbSuccessful: data.value.fields.endgame.mapValue.fields.climbed
+        .integerValue
+        ? true
+        : false,
+      failedToClimbed: data.value.fields.endgame.mapValue.fields.failed
+        .integerValue
+        ? true
+        : false,
       parkSuccessful:
         data.value.fields.endgame.mapValue.fields.parked.integerValue ||
         data.value.fields.endgame.mapValue.fields.failed.integerValue
@@ -60,7 +63,8 @@ export const eventLogBuilder = async (data, context) => {
         : false,
       yellowCard: data.value.fields.status.mapValue.fields.yellow.integerValue
         ? true
-        : false
+        : false,
+      comments: data.value.fields.comments.stringValue
     }
   ];
 
