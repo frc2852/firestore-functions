@@ -8,3 +8,9 @@ gcloud functions deploy robot-event-log-trigger \
 --trigger-event providers/cloud.firestore/eventTypes/document.create \
 --trigger-resource projects/${GCP_PROJECT_ID}/databases/\(default\)/documents/events/\{eventKey\}/robots/\{teamId\}/matches/\{matchId\} \
 --max-instances=1 --region=${GCP_REGION} --stage-bucket=${STAGE_BUCKET} --runtime nodejs10
+
+gcloud functions deploy match-stats-to-csv \
+--entry-point getCsvFromMatchStats \
+--trigger-http \
+--allow-unauthenticated \
+--max-instances=1 --region=${GCP_REGION} --stage-bucket=${STAGE_BUCKET} --runtime nodejs10
