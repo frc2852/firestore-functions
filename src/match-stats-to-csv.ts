@@ -16,6 +16,8 @@ export const getCsvFromMatchStats = async (req: Request, res: Response) => {
       "Team ID",
       "Match Number",
       "Scouter",
+      "Alliance Color",
+      "Drive Station",
       "High Shots",
       "Low Shots",
       "Miss Shots",
@@ -28,7 +30,9 @@ export const getCsvFromMatchStats = async (req: Request, res: Response) => {
       "Disconnected",
       "Foul",
       "Tech Foul",
-      "Comments"
+      "Comments",
+      "Start Time",
+      "Form Completed"
     ];
 
     const matchRows = event.teamStatsForMatch.map(match => {
@@ -38,6 +42,8 @@ export const getCsvFromMatchStats = async (req: Request, res: Response) => {
         !match.scouter || match.scouter.length === 0
           ? "No scout name was entered"
           : match.scouter,
+        match.teamColor,
+        match.driveStation,
         match.high,
         match.low,
         match.miss,
@@ -52,7 +58,9 @@ export const getCsvFromMatchStats = async (req: Request, res: Response) => {
         match.techFouls,
         match.comments && match.comments.length > 0
           ? match.comments.replace(/[\n\r]/gm, " --- ")
-          : ""
+          : "",
+        match.startTime,
+        match.formComplete
       ].join(",");
     });
 

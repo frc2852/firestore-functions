@@ -20,11 +20,24 @@ export const eventLogBuilder = async (data, context) => {
   const frcEventDataDoc = firestore.collection("events").doc(eventKey);
   const frcEventData = (await frcEventDataDoc.get()).data();
 
+  console.log(
+    "this is climb test",
+    data.value.fields.endgame.mapValue.fields.climbed.integerValue == 1
+  );
+  console.log(
+    "this is climb value",
+    data.value.fields.endgame.mapValue.fields.climbed.integerValue
+  );
+
   let teamStatsForMatch = [
     {
       eventKey,
       matchId,
       teamId,
+      teamColor: data.value.fields.color.stringValue,
+      driveStation: data.value.fields.driveStation.integerValue,
+      startTime: data.value.fields.matchStartTime.integerValue,
+      formComplete: data.value.fields.formComplete.integerValue,
       high: data.value.fields.points.mapValue.fields.high.integerValue,
       low: data.value.fields.points.mapValue.fields.low.integerValue,
       miss: data.value.fields.points.mapValue.fields.miss.integerValue,
@@ -33,37 +46,41 @@ export const eventLogBuilder = async (data, context) => {
       scouter: data.value.fields.scout.stringValue,
       defenseRating:
         data.value.fields.defense.mapValue.fields.rating.integerValue,
-      hasAutoBalance: data.value.fields.endgame.mapValue.fields.balanced
-        .integerValue
-        ? true
-        : false,
-      climbSuccessful: data.value.fields.endgame.mapValue.fields.climbed
-        .integerValue
-        ? true
-        : false,
-      failedToClimbed: data.value.fields.endgame.mapValue.fields.failed
-        .integerValue
-        ? true
-        : false,
-      parkSuccessful:
-        data.value.fields.endgame.mapValue.fields.parked.integerValue ||
-        data.value.fields.endgame.mapValue.fields.failed.integerValue
+      hasAutoBalance:
+        data.value.fields.endgame.mapValue.fields.balanced.integerValue == 1
           ? true
           : false,
-      wheelMoved: data.value.fields.wheel.mapValue.fields.position.integerValue
-        ? "position"
-        : data.value.fields.wheel.mapValue.fields.rotation.integerValue
-        ? "rotation"
-        : "none",
-      estop: data.value.fields.status.mapValue.fields.estop.integerValue
-        ? true
-        : false,
-      redCard: data.value.fields.status.mapValue.fields.red.integerValue
-        ? true
-        : false,
-      yellowCard: data.value.fields.status.mapValue.fields.yellow.integerValue
-        ? true
-        : false,
+      climbSuccessful:
+        data.value.fields.endgame.mapValue.fields.climbed.integerValue == 1
+          ? true
+          : false,
+      failedToClimbed:
+        data.value.fields.endgame.mapValue.fields.failed.integerValue == 1
+          ? true
+          : false,
+      parkSuccessful:
+        data.value.fields.endgame.mapValue.fields.parked.integerValue == 1 ||
+        data.value.fields.endgame.mapValue.fields.failed.integerValue == 1
+          ? true
+          : false,
+      wheelMoved:
+        data.value.fields.wheel.mapValue.fields.position.integerValue == 1
+          ? "position"
+          : data.value.fields.wheel.mapValue.fields.rotation.integerValue == 1
+          ? "rotation"
+          : "none",
+      estop:
+        data.value.fields.status.mapValue.fields.estop.integerValue == 1
+          ? true
+          : false,
+      redCard:
+        data.value.fields.status.mapValue.fields.red.integerValue == 1
+          ? true
+          : false,
+      yellowCard:
+        data.value.fields.status.mapValue.fields.yellow.integerValue == 1
+          ? true
+          : false,
       comments: data.value.fields.comments.stringValue
     }
   ];
